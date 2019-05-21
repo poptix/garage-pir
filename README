@@ -1,0 +1,24 @@
+Use the source luke.
+
+Requirements:
+
+bluez (for hcitool, l2ping)
+curl (for pushover)
+mosquitto-clients (for mosquitto_sub/mosquitto_pub)
+
+Bluetooth devices must be paired before they will work, make sure your device is visible/discoverable, then:
+
+First, scan for your mobile phone using
+$ hcitool scan
+
+This will give you the MAC address of the device. Connect to it 
+$ hcitool cc 14:5A:05:5C:A8:B4
+
+and pair (Note: I followed instructions here, but left out the passkey part. Surprisingly it works).
+$ hcitool auth 14:5A:05:5C:A8:B4
+
+Now you can use l2ping to see if it is in Bluetooth range.
+$ l2ping 14:5A:05:5C:A8:B4
+
+
+(Thanks http://grefab.blogspot.com/2012/09/am-i-there-raspberry-pi-and-bluetooth.html !) 
