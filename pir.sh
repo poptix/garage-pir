@@ -62,14 +62,18 @@ while [ 1 ]; do
 			fi
 		else
   			NEARBY=0
-			#Ping the bluetooth devices (phones..) of authorized people
-    			for i in `echo $BTDEVICES`; do
-				l2ping -d 0 -v $i -c 3 
-				RESULT=$? 
-				if [ $RESULT -eq 0 ]; then 
-					NEARBY=1 
-				fi 
-			done 
+			if [ -n ${BTDEVICES} ]; then
+				#Ping the bluetooth devices (phones..) of authorized people
+    				for i in `echo $BTDEVICES`; do
+					l2ping -d 0 -v $i -c 3 
+					RESULT=$? 
+					if [ $RESULT -eq 0 ]; then 
+						NEARBY=1 
+					fi 
+				done 
+			else
+				NEARBY=1
+			fi
 			if [ $NEARBY -eq 1 ]; then
 				echo Turning On
 				mosquitto_pub -h $MQTTHOST -t cmnd/$MQTTDEVICE/power -m $STATE 
