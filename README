@@ -1,10 +1,14 @@
+This is just something I threw together to save some power in my garage, and monitor motion. 
+
+Who knows, maybe someone will find it useful.
+
 Runs on a linux system with bluetooth (raspberry pi zero w in my case)
 Watches a GPIO input, I use a PIR motion sensor, it could just as easily be a magnetic door sensor or something else. 
 Once triggered, it looks for a registered bluetooth device within range
 If a valid device is found, it turns on the outlet
 If a valid device isn't found, it sends an alert to pushover.net (if configured)
 
-For further documentation: Use the source luke.
+For further documentation: Use the source, Luke.
 
 Requirements:
 
