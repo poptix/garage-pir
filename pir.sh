@@ -81,7 +81,7 @@ while [ 1 ]; do
 			else
 				echo Unauthorized visitor??
 				if [ -n ${POUSER} ]; then
-					curl -s --form -string "token=$POTOKEN" --form -string "user=$POUSER" --form -string "message=Unauthorized Garage motion detected!" https://api.pushover.net/1/messages.json
+					curl -s --form "token=$POTOKEN" --form "user=$POUSER" --form "message=Unauthorized Garage motion detected!" https://api.pushover.net/1/messages.json
 				fi
   			fi
 		fi
