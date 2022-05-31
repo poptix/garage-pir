@@ -49,7 +49,7 @@ while [ 1 ]; do
 		#We don't want to turn off unless there has been no motion for 15 minutes, save the last activity
 		printf -v LASTON '%(%s)T' 
 	fi 
-	if [ ${STATE} -ne ${LASTSTATE} ]; then 
+	if [ 1 ]; then #${STATE} -ne ${LASTSTATE} ]; then 
 		if [ $STATE -eq 0 ]; then 
 			echo No motion, check timer 
 			printf -v NOW '%(%s)T'
@@ -57,7 +57,7 @@ while [ 1 ]; do
 			echo $LASTON $((LASTON + $OFFDELAY)) $NOW 
 			if [ $((LASTON + $OFFDELAY)) -le $NOW ]; then
 				echo Turning Off
-				mosquitto_pub -h $MQTTHOST -t cmnd/$MQTTDEVICE/power -m $STATE 
+				mosquitto_pub -u $USER -P $PASS -h $MQTTHOST -t cmnd/$MQTTDEVICE/power -m $STATE 
 				LASTSTATE=$STATE
 			fi
 		else
@@ -76,8 +76,15 @@ while [ 1 ]; do
 			fi
 			if [ $NEARBY -eq 1 ]; then
 				echo Turning On
-				mosquitto_pub -h $MQTTHOST -t cmnd/$MQTTDEVICE/power -m $STATE 
+				mosquitto_pub -u $USER -P $PASS -h $MQTTHOST -t cmnd/$MQTTDEVICE/power -m $STATE 
 				LASTSTATE=$STATE
+				# Calm the cameras to avoid unnecessary alerts
+				wget -O /dev/null ${CALMDOWNURL}1
+				wget -O /dev/null ${CALMDOWNURL}2
+				wget -O /dev/null ${CALMDOWNURL}3
+				wget -O /dev/null ${CALMDOWNURL}5
+				wget -O /dev/null ${CALMDOWNURL}8
+				sleep 60
 			else
 				echo Unauthorized visitor??
 				if [ -n ${POUSER} ]; then
